@@ -11,12 +11,12 @@ import java.time.OffsetDateTime;
 public class VeiculoRepresentationModel {
 
     private Long id;
-    private String nomeProprietario;
+    private ProprietarioResumoRepresentationModel proprietario;
     private String marca;
     private String modelo;
     private String numeroPlaca;
     private StatusVeiculo status;
-    private OffsetDateTime dataCadastro;
-    private OffsetDateTime dataApreendido;
+    private OffsetDateTime dataCadastrada;
+    private OffsetDateTime dataApreensao;
 
 }
