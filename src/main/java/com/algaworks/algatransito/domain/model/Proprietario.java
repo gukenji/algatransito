@@ -18,6 +18,7 @@ import lombok.Setter;
 
 public class Proprietario {
 
+    //PODE SER EXCLUIDO NOTNULL E VALIDATIONGROUPS
     @NotNull(groups = ValidationGroups.ProprietarioId.class)
     @EqualsAndHashCode.Include
     @Id

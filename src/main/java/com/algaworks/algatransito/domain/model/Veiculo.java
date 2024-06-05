@@ -17,6 +17,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +26,7 @@ import java.time.OffsetDateTime;
 @Entity
 public class Veiculo {
 
+    // Validação porque pode ser feito a insercao de dados também atraves do DB
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -58,4 +61,18 @@ public class Veiculo {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataApreensao;
+
+    @OneToMany(mappedBy= "veiculo", cascade = CascadeType.ALL)
+    //CascadeType.ALL = todas as operações devem ser propagadas em cascata
+    // Todas mudancas na lista de autuacoes será sincronizada para o banco de dados
+    private List<Autuacao> autuacoes = new ArrayList<>();
+
+
+    // pode haver metodos de negocio aqui também, conforme abaixo
+    public Autuacao adicionarAutuacao(Autuacao autuacao) {
+        autuacao.setDataOcorrencia(OffsetDateTime.now());
+        autuacao.setVeiculo(this);
+        getAutuacoes().add(autuacao);
+        return autuacao;
+    }
 }
