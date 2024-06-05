@@ -1,5 +1,6 @@
 package com.algaworks.algatransito.domain.model;
 
+import com.algaworks.algatransito.domain.exception.NegocioException;
 import com.algaworks.algatransito.domain.validation.ValidationGroups;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.groups.ConvertGroup;
 import jakarta.validation.groups.Default;
@@ -74,5 +76,25 @@ public class Veiculo {
         autuacao.setVeiculo(this);
         getAutuacoes().add(autuacao);
         return autuacao;
+    }
+
+    public void apreender() {
+        if (estaApreendido()) {
+            throw new NegocioException("Veículo já está apreendido");
+        }
+        setStatus(StatusVeiculo.APREENDIDO);
+        setDataApreensao(OffsetDateTime.now());
+    }
+
+    public boolean estaApreendido() {
+        return StatusVeiculo.APREENDIDO.equals(getStatus());
+    }
+
+    public void removerApreensao() {
+        if (!estaApreendido()) {
+            throw new NegocioException("Veículo não está apreendido");
+        }
+        setStatus(StatusVeiculo.REGULAR);
+        setDataCadastrada(OffsetDateTime.now());
     }
 }
